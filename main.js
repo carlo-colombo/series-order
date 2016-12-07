@@ -1,7 +1,6 @@
 var TVDB = require("node-tvdb");
 var tvdb = new TVDB(require('./secrets.js'));
 
-
 function getEpisodes(id, season, name){
     return new Promise( (resolve, reject) => {
         tvdb.getEpisodesById(id, function(err, response) {
@@ -30,3 +29,4 @@ const episodes = Promise.all([
       .then( eps => [].concat.apply([], eps))
       .then( eps => eps.sort( (a,b) => compare(a.FirstAired, b.FirstAired)))
       .then( x   => x.forEach( ({name, SeasonNumber, EpisodeNumber, FirstAired}) => console.log(FirstAired, name, SeasonNumber, EpisodeNumber)))
+      .catch( err => console.error(err))
