@@ -2,8 +2,11 @@ var TVDB = require("node-tvdb");
 var tvdb = new TVDB(require('./secrets.js'));
 
 function getEpisodes(id, season, name){
+    const timer = setInterval(()=>process.stderr.write('.'), 1000)
     return new Promise( (resolve, reject) => {
         tvdb.getEpisodesById(id, function(err, response) {
+            clearInterval(timer)
+            process.stderr.write("*")
             if(err) return reject(err)
             resolve(response)
         })
