@@ -1,5 +1,6 @@
 var TVDB = require("node-tvdb");
 var tvdb = new TVDB(require('./secrets.js'));
+const {sortBy, flatten} = require('lodash')
 
 function getEpisodes(id, season, name){
     const timer = setInterval(()=>process.stderr.write('.'), 1000)
@@ -14,6 +15,7 @@ function getEpisodes(id, season, name){
 }
 
 function compare(a, b) {
+    console.log('comparing', a,b)
     if (a > b) {
         return 1;
     }
@@ -26,10 +28,10 @@ function compare(a, b) {
 
 const episodes = Promise.all([
     getEpisodes(279121, 3, "The Flash"),
-    getEpisodes(257655, 5, "The Arrow"),
+    getEpisodes(257655, 5, "The Arrow"), 
     getEpisodes(295760, 2, "Legends of tomorrow")
 ])
-      .then( eps => [].concat.apply([], eps))
-      .then( eps => eps.sort( (a,b) => compare(a.FirstAired, b.FirstAired)))
+      .then( eps => flatten(eps))
+      .then( eps => sortBy(eps, 'FirstAired'))
       .then( x   => x.forEach( ({name, SeasonNumber, EpisodeNumber, FirstAired}) => console.log(FirstAired, name, SeasonNumber, EpisodeNumber)))
       .catch( err => console.error(err))

@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-      "start": "node ./main.js"
+    "start": "node ./main.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "lodash": "^4.17.4",
     "node-tvdb": "^2.0.20"
   }
 }
